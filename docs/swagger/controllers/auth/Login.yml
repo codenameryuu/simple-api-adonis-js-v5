@@ -1,0 +1,41 @@
+/api/login:
+  post:
+    tags:
+      - Authentikasi
+    summary: Login
+    description: Login
+    
+    security: []
+    
+    requestBody:
+      content:
+        'multipart/form-data':
+          schema:
+            type: object
+            properties:
+              email: 
+                type: string
+                example: fikrisabriansyah@gmail.com
+                description: Email
+
+              password: 
+                type: string
+                example: fikrisabriansyah
+                description: Password
+
+            required:
+              - email
+              - password
+    
+    responses:
+      200:
+        description: API berhasil dijalankan
+
+      404:
+        description: URL API tidak tersedia
+
+      422:
+        description: Validasi error
+
+      500:
+        description: Server bermasalah

@@ -18,6 +18,13 @@
 |
 */
 
-import("./routes/auth-route");
-import("./routes/product-category-route");
-import("./routes/product-route");
+import Route from "@ioc:Adonis/Core/Route";
+
+Route.get("/", async ({ view }) => {
+  const specUrl = "/swagger.json";
+  return view.render("swagger", { specUrl });
+});
+
+import "./routes/auth-route";
+import "./routes/product-category-route";
+import "./routes/product-route";

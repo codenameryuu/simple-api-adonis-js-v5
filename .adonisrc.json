@@ -28,7 +28,8 @@
     "adonis5-swagger",
     "@adonisjs/drive-s3",
     "@adonisjs/auth",
-    "adonis5-jwt"
+    "adonis5-jwt",
+    "@adonisjs/view"
   ],
   "aceProviders": [
     "@adonisjs/repl"
@@ -46,5 +47,11 @@
   },
   "testProviders": [
     "@japa/preset-adonis/TestsProvider"
+  ],
+  "metaFiles": [
+    {
+      "pattern": "resources/views/**/*.edge",
+      "reloadServer": false
+    }
   ]
 }

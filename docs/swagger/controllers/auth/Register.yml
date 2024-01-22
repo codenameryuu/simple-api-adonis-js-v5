@@ -1,0 +1,47 @@
+/api/register:
+  post:
+    tags:
+      - Authentikasi
+    summary: Register
+    description: Register
+    
+    security: []
+    
+    requestBody:
+      content:
+        'multipart/form-data':
+          schema:
+            type: object
+            properties:
+              email: 
+                type: string
+                example: fikrisabriansyah@gmail.com
+                description: Email
+
+              password: 
+                type: string
+                example: fikrisabriansyah
+                description: Password
+
+              password_confirmation: 
+                type: string
+                example: fikrisabriansyah
+                description: Konfirmasi password
+
+            required:
+              - email
+              - password
+              - password_confirmation
+
+    responses:
+      200:
+        description: API berhasil dijalankan
+
+      404:
+        description: URL API tidak tersedia
+
+      422:
+        description: Validasi error
+
+      500:
+        description: Server bermasalah

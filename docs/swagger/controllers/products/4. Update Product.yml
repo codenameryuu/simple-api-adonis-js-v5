@@ -1,0 +1,62 @@
+/api/product/{product_id}:
+  put:
+    tags:
+      - Produk
+    summary: Mengubah data produk
+    description: Mengubah detail data produk
+
+    security:
+      - bearerAuth: []
+    
+    parameters:
+    - name: product_id
+      in: path
+      required: true
+      description: ID produk
+      example: 1
+      schema: 
+        type: number
+
+    requestBody:
+      content:
+        'multipart/form-data':
+          schema:
+            type: object
+            properties:
+              product_category_id: 
+                type: number
+                example: 1
+                description: ID kategori produk
+
+              name: 
+                type: string
+                example: Meja
+                description: Nama
+
+              price: 
+                type: number
+                example: 100000
+                description: Harga
+
+              file: 
+                type: string
+                format: binary
+                description: Foto, hanya menerima format jpg, jpeg dan png
+
+            required:
+              - product_category_id
+              - name
+              - price
+    
+    responses:
+      200:
+        description: API berhasil dijalankan
+
+      404:
+        description: URL API tidak tersedia
+
+      422:
+        description: Validasi error
+
+      500:
+        description: Server bermasalah
