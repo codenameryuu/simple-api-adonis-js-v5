@@ -1,0 +1,31 @@
+/api/product/{product_id}:
+  get:
+    tags:
+      - Kategori Produk
+    summary: Mengambil detail data kategori produk
+    description: Mengambil detail data kategori produk
+
+    security:
+      - bearerAuth: []
+    
+    parameters:
+    - name: product_category_id
+      in: path
+      required: true
+      description: ID kategori produk
+      example: 1
+      schema: 
+        type: number
+    
+    responses:
+      200:
+        description: API berhasil dijalankan
+
+      404:
+        description: URL API tidak tersedia
+
+      422:
+        description: Validasi error
+
+      500:
+        description: Server bermasalah

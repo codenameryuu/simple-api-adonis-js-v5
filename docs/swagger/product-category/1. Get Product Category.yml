@@ -1,0 +1,55 @@
+/api/product:
+  get:
+    tags:
+      - Kategori Produk
+    summary: Mengambil data kategori produk
+    description: Mengambil data kategori produk
+
+    security:
+      - bearerAuth: []
+    
+    parameters:
+    - name: paginate
+      in: query
+      required: true
+      description: Status paginasi
+      schema: 
+        type: string
+        enum: ['Ya', 'Tidak']
+
+    - name: page
+      in: query
+      required: true
+      description: Halaman keberapa
+      example: 1
+      schema: 
+        type: number
+
+    - name: per_page
+      in: query
+      required: true
+      description: Jumlah per halaman
+      example: 10
+      schema: 
+        type: number
+
+    - name: filter[name]
+      in: query
+      required: false
+      description: Filter untuk nama
+      example: 'kursi'
+      schema: 
+        type: string
+    
+    responses:
+      200:
+        description: API berhasil dijalankan
+
+      404:
+        description: URL API tidak tersedia
+
+      422:
+        description: Validasi error
+
+      500:
+        description: Server bermasalah
