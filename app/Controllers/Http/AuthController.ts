@@ -6,6 +6,7 @@ const authValidation = new AuthValidation();
 import AuthService from "App/Services/AuthService";
 const authService = new AuthService();
 
+import formatPayload from "App/Traits/FormatPayload";
 import formatResponse from "App/Traits/FormatResponse";
 
 export default class AuthController {
@@ -16,7 +17,8 @@ export default class AuthController {
       return formatResponse(validation, response);
     }
 
-    const result = await authService.register(auth, request);
+    const payload = formatPayload(request);
+    const result = await authService.register(auth, payload);
 
     return formatResponse(result, response);
   }
@@ -28,7 +30,8 @@ export default class AuthController {
       return formatResponse(validation, response);
     }
 
-    const result = await authService.login(auth, request);
+    const payload = formatPayload(request);
+    const result = await authService.login(auth, payload);
 
     return formatResponse(result, response);
   }

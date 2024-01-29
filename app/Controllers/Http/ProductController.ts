@@ -6,6 +6,7 @@ const productValidation = new ProductValidation();
 import ProductService from "App/Services/ProductService";
 const productService = new ProductService();
 
+import formatPayload from "App/Traits/FormatPayload";
 import formatResponse from "App/Traits/FormatResponse";
 
 export default class ProductController {
@@ -16,7 +17,8 @@ export default class ProductController {
       return formatResponse(validation, response);
     }
 
-    const result = await productService.index(request);
+    const payload = formatPayload(request);
+    const result = await productService.index(payload);
 
     return formatResponse(result, response);
   }
@@ -28,7 +30,8 @@ export default class ProductController {
       return formatResponse(validation, response);
     }
 
-    const result = await productService.show(request);
+    const payload = formatPayload(request);
+    const result = await productService.show(payload);
 
     return formatResponse(result, response);
   }
@@ -40,7 +43,8 @@ export default class ProductController {
       return formatResponse(validation, response);
     }
 
-    const result = await productService.store(request);
+    const payload = formatPayload(request);
+    const result = await productService.store(payload);
 
     return formatResponse(result, response);
   }
@@ -52,7 +56,8 @@ export default class ProductController {
       return formatResponse(validation, response);
     }
 
-    const result = await productService.update(request);
+    const payload = formatPayload(request);
+    const result = await productService.update(payload);
 
     return formatResponse(result, response);
   }
@@ -64,7 +69,8 @@ export default class ProductController {
       return formatResponse(validation, response);
     }
 
-    const result = await productService.destroy(request);
+    const payload = formatPayload(request);
+    const result = await productService.destroy(payload);
 
     return formatResponse(result, response);
   }

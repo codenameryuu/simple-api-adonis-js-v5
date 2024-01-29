@@ -5,13 +5,11 @@ export default class ProductService {
     let result: any;
 
     try {
-      const req = request.all();
+      let data: any, pagination: any;
+      let query = Product.query().filter(request.filter);
 
-      let data, pagination;
-      let query = Product.query().filter(req.filter);
-
-      if (req.paginate == "Ya") {
-        data = await query.paginate(req.page, req.per_page);
+      if (request.paginate == "Ya") {
+        data = await query.paginate(request.page, request.per_page);
         pagination = true;
       } else {
         data = await query.exec();
@@ -24,7 +22,7 @@ export default class ProductService {
         data: data,
         pagination: pagination,
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal diambil !",
@@ -38,16 +36,14 @@ export default class ProductService {
     let result: any;
 
     try {
-      const params = request.params();
-
-      const data = await Product.findBy("id", params.product_id);
+      const data = await Product.findBy("id", request.product_id);
 
       result = {
         status: true,
         message: "Data berhasil diambil !",
         data: data,
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal diambil !",
@@ -61,31 +57,28 @@ export default class ProductService {
     let result: any;
 
     try {
-      const req = request.all();
-      const file = request.file("file");
-
-      let data: any = {
-        product_category_id: req.product_category_id,
-        name: req.name,
-        price: req.price,
+      let payload: any = {
+        product_category_id: request.product_category_id,
+        name: request.name,
+        price: request.price,
       };
 
-      const fileName = await Product.saveFile(file);
+      const fileName = await Product.saveFile(request.file);
 
       if (fileName) {
-        data.file = fileName;
+        payload.file = fileName;
       }
 
-      const product = await Product.create(data);
+      const product = await Product.create(payload);
 
-      data = await Product.findBy("id", product.id);
+      const data = await Product.findBy("id", product.id);
 
       result = {
         status: true,
         message: "Data berhasil disimpan !",
         data: data,
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal disimpan !",
@@ -99,33 +92,29 @@ export default class ProductService {
     let result: any;
 
     try {
-      const params = request.params();
-      const req = request.all();
-      const file = request.file("file");
-
-      let data: any = {
-        product_category_id: req.product_category_id,
-        name: req.name,
-        price: req.price,
+      let payload: any = {
+        product_category_id: request.product_category_id,
+        name: request.name,
+        price: request.price,
       };
 
-      const fileName = await Product.saveFile(file);
+      const fileName = await Product.saveFile(request.file);
 
       if (fileName) {
-        await Product.deleteFile(params.product_id);
-        data.file = fileName;
+        await Product.deleteFile(request.product_id);
+        payload.file = fileName;
       }
 
-      await Product.query().where("id", params.product_id).update(data);
+      await Product.query().where("id", request.product_id).update(payload);
 
-      data = await Product.findBy("id", params.product_id);
+      const data = await Product.findBy("id", request.product_id);
 
       result = {
         status: true,
         message: "Data berhasil disimpan !",
         data: data,
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal disimpan !",
@@ -139,17 +128,15 @@ export default class ProductService {
     let result: any;
 
     try {
-      const params = request.params();
-
-      await Product.deleteFile(params.product_id);
-      const product = await Product.findBy("id", params.product_id);
+      await Product.deleteFile(request.product_id);
+      const product = await Product.findBy("id", request.product_id);
       await product!.delete();
 
       result = {
         status: true,
         message: "Data berhasil dihapus !",
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal dihapus !",

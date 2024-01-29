@@ -7,19 +7,17 @@ export default class AuthService {
     let result: any;
 
     try {
-      const req = request.all();
+      const email = request.email.toLowerCase();
+      const password = await Hash.make(request.password);
 
-      const email = req.email.toLowerCase();
-      const password = await Hash.make(req.password);
-
-      let data: any = {
+      const payload = {
         email: email,
         password: password,
       };
 
-      const user = await User.create(data);
+      const user = await User.create(payload);
 
-      data = await User.findBy("id", user.id);
+      const data = await User.findBy("id", user.id);
 
       const accessToken = await auth.use("jwt").generate(data, {
         expiresIn: "1 day",
@@ -31,7 +29,7 @@ export default class AuthService {
         data: data,
         accessToken: accessToken,
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal disimpan !",
@@ -59,7 +57,7 @@ export default class AuthService {
         data: data,
         accessToken: accessToken,
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal diambil !",
@@ -79,7 +77,7 @@ export default class AuthService {
         status: true,
         message: "Data berhasil dihapus !",
       };
-    } catch (err) {
+    } catch (e) {
       result = {
         status: true,
         message: "Data gagal dihapus !",

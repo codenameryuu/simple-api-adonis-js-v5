@@ -2,7 +2,7 @@ import { schema, rules } from "@ioc:Adonis/Core/Validator";
 
 export default class ProductValidation {
   public async index(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       paginate: schema.enum(["Ya", "Tidak"] as const),
@@ -31,10 +31,10 @@ export default class ProductValidation {
 
       status = true;
       message = "Validasi berhasil !";
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {
@@ -47,7 +47,7 @@ export default class ProductValidation {
   }
 
   public async show(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       params: schema.object().members({
@@ -69,10 +69,10 @@ export default class ProductValidation {
 
       status = true;
       message = "Validasi berhasil !";
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {
@@ -85,7 +85,7 @@ export default class ProductValidation {
   }
 
   public async store(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       product_category_id: schema.number([rules.required(), rules.exists({ table: "product_categories", column: "id" })]),
@@ -120,10 +120,10 @@ export default class ProductValidation {
 
       status = true;
       message = "Validasi berhasil !";
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {
@@ -136,7 +136,7 @@ export default class ProductValidation {
   }
 
   public async update(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       params: schema.object().members({
@@ -178,10 +178,10 @@ export default class ProductValidation {
 
       status = true;
       message = "Validasi berhasil !";
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {
@@ -194,7 +194,7 @@ export default class ProductValidation {
   }
 
   public async destroy(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       params: schema.object().members({
@@ -216,10 +216,10 @@ export default class ProductValidation {
 
       status = true;
       message = "Validasi berhasil !";
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {

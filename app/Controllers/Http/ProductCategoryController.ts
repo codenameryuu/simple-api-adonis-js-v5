@@ -6,6 +6,7 @@ const productCategoryValidation = new ProductCategoryValidation();
 import ProductCategoryService from "App/Services/ProductCategoryService";
 const productCategoryService = new ProductCategoryService();
 
+import formatPayload from "App/Traits/FormatPayload";
 import formatResponse from "App/Traits/FormatResponse";
 
 export default class ProductCategoryController {
@@ -16,7 +17,8 @@ export default class ProductCategoryController {
       return formatResponse(validation, response);
     }
 
-    const result = await productCategoryService.index(request);
+    const payload = formatPayload(request);
+    const result = await productCategoryService.index(payload);
 
     return formatResponse(result, response);
   }
@@ -28,7 +30,8 @@ export default class ProductCategoryController {
       return formatResponse(validation, response);
     }
 
-    const result = await productCategoryService.show(request);
+    const payload = formatPayload(request);
+    const result = await productCategoryService.show(payload);
 
     return formatResponse(result, response);
   }
@@ -40,7 +43,8 @@ export default class ProductCategoryController {
       return formatResponse(validation, response);
     }
 
-    const result = await productCategoryService.store(request);
+    const payload = formatPayload(request);
+    const result = await productCategoryService.store(payload);
 
     return formatResponse(result, response);
   }
@@ -52,7 +56,8 @@ export default class ProductCategoryController {
       return formatResponse(validation, response);
     }
 
-    const result = await productCategoryService.update(request);
+    const payload = formatPayload(request);
+    const result = await productCategoryService.update(payload);
 
     return formatResponse(result, response);
   }
@@ -64,7 +69,8 @@ export default class ProductCategoryController {
       return formatResponse(validation, response);
     }
 
-    const result = await productCategoryService.destroy(request);
+    const payload = formatPayload(request);
+    const result = await productCategoryService.destroy(payload);
 
     return formatResponse(result, response);
   }

@@ -1,10 +1,11 @@
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import Hash from "@ioc:Adonis/Core/Hash";
+
 import User from "App/Models/User";
 
 export default class AuthValidation {
   public async register(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       email: schema.string([rules.required(), rules.email(), rules.unique({ table: "users", column: "email", caseInsensitive: true })]),
@@ -31,10 +32,10 @@ export default class AuthValidation {
 
       status = true;
       message = "Validasi berhasil !";
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {
@@ -47,7 +48,7 @@ export default class AuthValidation {
   }
 
   public async login(request: any) {
-    let status, message, errorField;
+    let status: any, message: any, errorField: any;
 
     const validationSchema = schema.create({
       email: schema.string([rules.required(), rules.email(), rules.exists({ table: "users", column: "email", caseInsensitive: true })]),
@@ -79,10 +80,10 @@ export default class AuthValidation {
         message = "Password salah !";
         errorField = "password";
       }
-    } catch (err) {
+    } catch (e) {
       status = false;
-      message = err.messages.errors[0].message;
-      errorField = err.messages.errors[0].field;
+      message = e.messages.errors[0].message;
+      errorField = e.messages.errors[0].field;
     }
 
     const result = {
