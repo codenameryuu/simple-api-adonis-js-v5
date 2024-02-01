@@ -70,8 +70,8 @@ export default class Product extends compose(BaseModel, Filterable, SoftDeletes)
     const response = await storageHelper.create(product!.name, file);
 
     const fileJson = {
-      id: response.id,
-      detail: response.file,
+      reference_id: response.id,
+      details: response.file,
     };
 
     product!.file = fileJson;
