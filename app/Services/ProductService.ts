@@ -57,19 +57,14 @@ export default class ProductService {
     let result: any;
 
     try {
-      let payload: any = {
+      let payload = {
         product_category_id: request.product_category_id,
         name: request.name,
         price: request.price,
       };
 
-      const fileName = await Product.saveFile(request.file);
-
-      if (fileName) {
-        payload.file = fileName;
-      }
-
       const product = await Product.create(payload);
+      await Product.saveFile(product.id, request.file);
 
       const data = await Product.findBy("id", product.id);
 
@@ -79,6 +74,8 @@ export default class ProductService {
         data: data,
       };
     } catch (e) {
+      console.log(e);
+
       result = {
         status: true,
         message: "Data gagal disimpan !",
@@ -92,20 +89,15 @@ export default class ProductService {
     let result: any;
 
     try {
-      let payload: any = {
+      let payload = {
         product_category_id: request.product_category_id,
         name: request.name,
         price: request.price,
       };
 
-      const fileName = await Product.saveFile(request.file);
-
-      if (fileName) {
-        await Product.deleteFile(request.product_id);
-        payload.file = fileName;
-      }
-
       await Product.query().where("id", request.product_id).update(payload);
+      await Product.deleteFile(request.product_id);
+      await Product.saveFile(request.product_id, request.file);
 
       const data = await Product.findBy("id", request.product_id);
 
@@ -128,8 +120,8 @@ export default class ProductService {
     let result: any;
 
     try {
-      await Product.deleteFile(request.product_id);
       const product = await Product.findBy("id", request.product_id);
+      await Product.deleteFile(product!.id);
       await product!.delete();
 
       result = {

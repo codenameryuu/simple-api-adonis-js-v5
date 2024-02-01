@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { BaseModel, BelongsTo, ModelQueryBuilderContract, beforeFetch, beforeFind, belongsTo, column, computed } from "@ioc:Adonis/Lucid/Orm";
+import { BaseModel, BelongsTo, ModelQueryBuilderContract, beforeFetch, beforeFind, belongsTo, column } from "@ioc:Adonis/Lucid/Orm";
 import { compose } from "@ioc:Adonis/Core/Helpers";
 import { Filterable } from "adonis-lucid-filter/build/src/Mixin";
 import { SoftDeletes } from "@ioc:Adonis/Addons/LucidSoftDeletes";
@@ -29,17 +29,7 @@ export default class Product extends compose(BaseModel, Filterable, SoftDeletes)
   public price: number;
 
   @column()
-  public file?: string | null;
-
-  @computed({ serializeAs: "file_url" })
-  public get fileUrl() {
-    if (this.file) {
-      const result = storageHelper.getUrl(this.file, "products");
-      return result;
-    }
-
-    return null;
-  }
+  public file?: object | null;
 
   @column.dateTime({ serializeAs: null })
   public deletedAt: DateTime;
@@ -74,18 +64,26 @@ export default class Product extends compose(BaseModel, Filterable, SoftDeletes)
   | write your static method(s) below, to maintain code readability
   */
 
-  static async saveFile(file: any) {
-    const fileName = await storageHelper.upload(file, "products");
+  static async saveFile(id: any, file: any) {
+    const product = await Product.findBy("id", id);
 
-    return fileName;
+    const response = await storageHelper.create(product!.name, file);
+
+    const fileJson = {
+      id: response.id,
+      detail: response.file,
+    };
+
+    product!.file = fileJson;
+
+    await product!.save();
   }
 
-  static async deleteFile(productId: any) {
-    const product = await Product.findBy("id", productId);
+  static async deleteFile(id: any) {
+    const product = await Product.findBy("id", id);
+    const productJson = product!.toJSON();
 
-    if (product?.file) {
-      await storageHelper.delete(product?.file, "products");
-    }
+    await storageHelper.delete(productJson.file.id);
   }
 
   /*

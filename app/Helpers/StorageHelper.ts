@@ -1,50 +1,38 @@
-import Drive from "@ioc:Adonis/Core/Drive";
 import Env from "@ioc:Adonis/Core/Env";
-import { DateTime } from "luxon";
+
+import axios from "axios";
+import FormData from "form-data";
 import fs from "fs";
 
-const rootPath = Env.get("S3_ROOT");
+const apiUrl = Env.get("FILE_SERVICE_URL");
 
 export default class StorageHelper {
-  public getUrl(file: any, additionalPath: any = null) {
-    const result = Env.get("S3_ENDPOINT") + "/" + Env.get("S3_BUCKET") + "/" + Env.get("S3_ROOT") + "/" + additionalPath + "/" + file;
+  public async create(name: any, file: any) {
+    let response: any;
 
-    return result;
+    var payload = new FormData();
+
+    payload.append("name", name);
+    payload.append("file", fs.createReadStream(file.tmpPath));
+
+    await axios
+      .post(apiUrl + "/api/file-service", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        response = res.data.data;
+      })
+      .catch((e) => {});
+
+    return response;
   }
 
-  public async upload(file: any, additionalPath: any = null) {
-    let fileName: any = null;
-
-    if (file) {
-      const now = DateTime.now().toFormat("yyyyLLddHHmmss");
-      const uniqueId = Math.random().toString(26).slice(2);
-
-      fileName = now + uniqueId + "." + file.extname;
-      let filePath = rootPath + "/" + fileName;
-
-      if (additionalPath) {
-        filePath = rootPath + "/" + additionalPath + "/" + fileName;
-      }
-
-      const fileStream = fs.createReadStream(file.tmpPath!);
-
-      await Drive.use("s3").putStream(filePath, fileStream, {
-        contentType: file.headers["content-type"],
-      });
-    }
-
-    return fileName;
-  }
-
-  public async delete(file: any, additionalPath: any = null) {
-    let filePath = rootPath + "/" + file;
-
-    if (additionalPath) {
-      filePath = rootPath + "/" + additionalPath + "/" + file;
-    }
-
-    if (await Drive.use("s3").exists(filePath)) {
-      await Drive.use("s3").delete(filePath);
-    }
+  public async delete(fileId: any) {
+    await axios
+      .delete(apiUrl + "/api/file-service/" + fileId)
+      .then((res) => {})
+      .catch((e) => {});
   }
 }

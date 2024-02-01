@@ -29,7 +29,9 @@
     "@adonisjs/drive-s3",
     "@adonisjs/auth",
     "adonis5-jwt",
-    "@adonisjs/view"
+    "@adonisjs/view",
+    "@adonisjs/attachment-lite",
+    "adonis-responsive-attachment"
   ],
   "aceProviders": [
     "@adonisjs/repl"

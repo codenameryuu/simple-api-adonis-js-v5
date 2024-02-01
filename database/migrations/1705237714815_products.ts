@@ -11,8 +11,7 @@ export default class extends BaseSchema {
 
       table.string("name");
       table.integer("price").defaultTo(0);
-      table.string("file").nullable();
-      table.text("file_url").nullable();
+      table.json("file").nullable();
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
